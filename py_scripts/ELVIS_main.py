@@ -1,4 +1,4 @@
-from subset import ELVIS_createsubset_modul, ELVIS_data_import_modul, ELVIS_field_indices_modul, \
+from py_scripts import ELVIS_createsubset_modul, ELVIS_data_import_modul, ELVIS_field_indices_modul, \
     ELVIS_pix_based_indices_modul, ELVIS_date_based_subsets
 from datetime import datetime
 
@@ -42,20 +42,20 @@ def main():
     # 46 and 51
 
     # create shp_list and shp names
-    # shp_list = ELVIS_data_import_modul.shp_files(inpath, shp_extension)
-    # shp_names = ELVIS_data_import_modul.shp_names(inpath, shp_extension)
+    shp_list = ELVIS_data_import_modul.shp_files(inpath, shp_extension)
+    shp_names = ELVIS_data_import_modul.shp_names(inpath, shp_extension)
 
     # create raster_list and raster names
-    # raster_list = ELVIS_data_import_modul.raster_files(inpath, ras_extension)
-    # raster_names = ELVIS_data_import_modul.raster_names(inpath, ras_extension)
+    raster_list = ELVIS_data_import_modul.raster_files(inpath, ras_extension)
+    raster_names = ELVIS_data_import_modul.raster_names(inpath, ras_extension)
 
     # subsetting all files
     # ELVIS_createsubset_modul.subs(shp_list, shp_names, raster_list, raster_names, ras_extension, outpath_subsets)
 
     # calculating the different indices with a field based and pixel based approach
     # field based function creates mean/median for each field/croptype and gives an csv-file as output
-    subset_list = ELVIS_field_indices_modul.subset_import(subset_list, outpath_date_based_subsets)
-    ELVIS_field_indices_modul.indices_field_based(subset_list)
+    # subset_list = ELVIS_field_indices_modul.subset_import(subset_list, outpath_date_based_subsets)
+    # ELVIS_field_indices_modul.indices_field_based(subset_list)
 
     # pixel based function creates for each indice an tif
     # manche parameter müssen manuell im folgenden Modul geändert werden
