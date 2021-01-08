@@ -1,5 +1,5 @@
 from py_scripts import ELVIS_createsubset_modul, ELVIS_data_import_modul, ELVIS_field_indices_modul, \
-    ELVIS_pix_based_indices_modul, ELVIS_date_based_subsets
+    ELVIS_pix_based_indices_modul, ELVIS_date_based_subsets, ELVIS_simple_subset
 from datetime import datetime
 
 start_time = datetime.now()
@@ -13,7 +13,7 @@ def main():
     # folder
 
     # outpath like "C:/your/path/output/"
-    outpath_subsets = "C:/402_praxis/processed/sen2_scenes/fid_based/"  # path from the output folder
+    outpath_subsets = "C:/402_praxis/processed/sen2_scenes/fid_based/test/"  # path from the output folder
 
     outpath_date_based_subsets = "C:/402_praxis/processed/sen2_scenes/date_based/"
     # outpath like "C:/your/path/output_date_based/"
@@ -42,12 +42,15 @@ def main():
     # 46 and 51
 
     # create shp_list and shp names
-    shp_list = ELVIS_data_import_modul.shp_files(inpath, shp_extension)
-    shp_names = ELVIS_data_import_modul.shp_names(inpath, shp_extension)
+    # shp_list = ELVIS_data_import_modul.shp_files(inpath, shp_extension)
+    # shp_names = ELVIS_data_import_modul.shp_names(inpath, shp_extension)
 
     # create raster_list and raster names
-    raster_list = ELVIS_data_import_modul.raster_files(inpath, ras_extension)
-    raster_names = ELVIS_data_import_modul.raster_names(inpath, ras_extension)
+    # raster_list = ELVIS_data_import_modul.raster_files(inpath, ras_extension)
+    # raster_names = ELVIS_data_import_modul.raster_names(inpath, ras_extension)
+
+    # subsetting simple
+    ELVIS_simple_subset.simple_subset(inpath, outpath_subsets, shp_extension, ras_extension, shp_list, raster_list)
 
     # subsetting all files
     # ELVIS_createsubset_modul.subs(shp_list, shp_names, raster_list, raster_names, ras_extension, outpath_subsets)
