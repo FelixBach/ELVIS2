@@ -63,7 +63,9 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
         dfs = [pd.read_csv(path, decimal='.', index_col=False) for path in
                paths]  # Get list of dataframes from CSV file paths
         concat_df = pd.concat(dfs)  # Concat dataframes into one
-        # concat_df.replace(':', '', inplace=True,regex=True)
+        compare_dates_df = concat_df  # saving original date and time in a csv file
+        compare_dates_df.to_csv(str(outpath_date_based_subsets) + str("/") + str("date_") + str(f), index=False,
+                                header=False)
         concat_df.replace(to_replace=[":", '\.', '-'],
                           value="", regex=True, inplace=True)
         concat_df.replace(to_replace=" ",
@@ -79,6 +81,7 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
               "were found.\nYou can find the resulting .csv-file for each FID in your outpath.\n")
         print(f)
 
+        '''
         # iterate over .shp-files
         with fiona.open(shp_list[i_shp], "r") as shapefile:
             shapes = [feature["geometry"] for feature in shapefile]
@@ -112,3 +115,4 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
         subset_count = i_shp * i_ras
         if len(shp_list) * len(compare_list_names) == subset_count:
             print(str("Done. \n ") + str(subset_count) + str(" subsets created"))
+        '''
