@@ -15,14 +15,8 @@ ndvi_mean = []
 ndvi_median = []
 arvi_mean = []
 arvi_median = []
-arvi_2_mean = []
-arvi_2_median = []
-bri_mean = []
-bri_median = []
 ccci_mean = []
 ccci_median = []
-dvi_mean = []
-dvi_median = []
 gari_mean = []
 gari_median = []
 ndre_mean = []
@@ -35,7 +29,7 @@ siwsi_median = []
 
 def subset_import(subset_list, outpath_date_based_subsets):
     # searching for subsets as input
-    for name in glob.glob(str(outpath_date_based_subsets) + str('*_51.tif')):
+    for name in glob.glob(str(outpath_date_based_subsets) + str('*_4.tif')):
         subset_list.append(name)
     subset_list = [w.replace('\\', '/') for w in subset_list]
     # subset_name = [w[len(inpath):] for w in subset_list]
@@ -101,24 +95,6 @@ def indices_field_based(subset_list):
         arvi_mean.append(arvi_mean_field)
         arvi_median.append(arvi_median_field)
 
-        # arvi 2
-        arvi_2_mean_field = -0.18 + 1.17 * ((np.nanmean(band_8_nir_big) - np.nanmean(band_4_red)) -
-                                            (np.nanmean(band_8_nir_big) + np.nanmean(band_4_red)))
-        arvi_2_median_field = -0.18 + 1.17 * ((np.nanmedian(band_8_nir_big) - np.nanmedian(band_4_red)) -
-                                              (np.nanmedian(band_8_nir_big) + np.nanmedian(band_4_red)))
-
-        arvi_2_mean.append(arvi_2_mean_field)
-        arvi_2_median.append(arvi_2_median_field)
-
-        # bri
-        bri_mean_field = (1 / np.nanmean(band_3_green) - 1 / np.nanmean(band_5_red_edge_1_sm)) / \
-                         np.nanmean(band_6_red_edge_2_sm)
-        bri_median_field = (1 / np.nanmedian(band_3_green) - 1 / np.nanmedian(band_5_red_edge_1_sm)) / \
-                           np.nanmedian(band_6_red_edge_2_sm)
-
-        bri_mean.append(bri_mean_field)
-        bri_median.append(bri_median_field)
-
         # ccci
         ccci_mean_field = ((np.nanmean(band_8_nir_big) - np.nanmean(band_5_red_edge_1_sm)) /
                            (np.nanmean(band_8_nir_big) + np.nanmean(band_5_red_edge_1_sm))) / \
@@ -131,13 +107,6 @@ def indices_field_based(subset_list):
 
         ccci_mean.append(ccci_mean_field)
         ccci_median.append(ccci_median_field)
-
-        # dvi
-        dvi_mean_field = 2.4 * np.nanmean(band_8_nir_big) - np.nanmean(band_4_red)
-        dvi_median_field = 2.4 * np.nanmedian(band_8_nir_big) - np.nanmedian(band_4_red)
-
-        dvi_mean.append(dvi_mean_field)
-        dvi_median.append(dvi_median_field)
 
         # gari
         gari_mean_field = (np.nanmean(band_8_nir_big) - (
@@ -182,15 +151,13 @@ def indices_field_based(subset_list):
         siwsi_median.append(siwsi_median_field)
 
         if (i + 1) == (len(subset_list)):
-            with open("C:/402_praxis/processed/indices_csv/cloudless_indices_fid_51.csv", 'w',
+            with open("C:/402_praxis/processed/indices_csv/fid_4.csv", 'w',
                       encoding="UTF-8", newline='') as myfile:
                 wr = csv.writer(myfile)
-                wr.writerow(("ndvi_mean", "ndvi_median", "arvi_mean", "arvi_median", "arvi_2_mean", "arvi_2_median",
-                             "bri_mean", "bri_median", "ccci_mean", "ccci_median", "dvi_mean", "dvi_median",
+                wr.writerow(("ndvi_mean", "ndvi_median", "arvi_mean", "arvi_median", "ccci_mean", "ccci_median",
                              "gari_mean", "gari_median", "ndre_mean", "ndre_median", "savi_mean", "savi_median",
                              "siwsi_mean", "siwsi_median"))
-                wr.writerows(zip(ndvi_mean, ndvi_median, arvi_mean, arvi_median, arvi_2_mean, arvi_2_median,
-                                 bri_mean, bri_median, ccci_mean, ccci_median, dvi_mean, dvi_median, gari_mean,
+                wr.writerows(zip(ndvi_mean, ndvi_median, arvi_mean, arvi_median,  ccci_mean, ccci_median, gari_mean,
                                  gari_median, ndre_mean, ndre_median, savi_mean, savi_median, siwsi_mean,
                                  siwsi_median))
 

@@ -9,10 +9,7 @@ ras_ex = '*.tif'
 # result list pixel based
 ndvi_pixel = []
 arvi_pixel = []
-arvi_2_pixel = []
-bri_pixel = []
 ccci_pixel = []
-dvi_pixel = []
 gari_pixel = []
 ndre_pixel = []
 savi_pixel = []
@@ -21,7 +18,7 @@ siwsi_pixel = []
 
 def sublist(subset_list):
     # searching for input in file
-    for name in glob.glob('C:/402_praxis/processed/sen2_scenes/fid_based/*_4.tif'):
+    for name in glob.glob('C:/402_praxis/processed/sen2_scenes/date_based/*.tif'):
         subset_list.append(name)
     # for name in glob.glob('C:/402_praxis/test_path/more_files/*_47.tif'):
     #     subset_list.append(name)
@@ -53,33 +50,12 @@ def arvi_pix(band_8_nir_big, band_4_red, band_2_blue):
     return arvi_pixel
 
 
-def arvi2_pix(band_8_nir_big, band_4_red):
-    arvi_2_pixel_res = -0.18 + 1.17 * ((band_8_nir_big - band_4_red) - (band_8_nir_big + band_4_red))
-    arvi_2_pixel.append(arvi_2_pixel_res)
-
-    return arvi_2_pixel
-
-
-def bri_pix(band_3_green, band_5_red_edge_1_sm, band_6_red_edge_2_sm):
-    bri_pixel_res = (1 / band_3_green - 1 / band_5_red_edge_1_sm) / band_6_red_edge_2_sm
-    bri_pixel.append(bri_pixel_res)
-
-    return bri_pixel
-
-
 def ccci_pix(band_8_nir_big, band_4_red, band_5_red_edge_1_sm):
     ccci_pixel_res = ((band_8_nir_big - band_5_red_edge_1_sm) / (band_8_nir_big + band_5_red_edge_1_sm)) / \
                      ((band_8_nir_big - band_4_red) / (band_8_nir_big + band_4_red))
     ccci_pixel.append(ccci_pixel_res)
 
     return ccci_pixel
-
-
-def dvi_pix(band_8_nir_big, band_4_red):
-    dvi_pixel_res = 2.4 * band_8_nir_big - band_4_red
-    dvi_pixel.append(dvi_pixel_res)
-
-    return dvi_pixel
 
 
 def gari_pix(band_8_nir_big, band_3_green, band_2_blue, band_4_red):
@@ -151,15 +127,12 @@ def pixel_based_ratio(subset_list):
             # you have to change manually the calculated indices
             # also important YOU have to change line 178 to the right indice and also some path changes in in line 173
 
-            ndvi_pix(band_8_nir_big, band_4_red)
+            # ndvi_pix(band_8_nir_big, band_4_red)
             # arvi_pix(band_8_nir_big, band_4_red, band_2_blue)
-            # arvi2_pix(band_8_nir_big, band_4_red)
-            # bri_pix(band_3_green, band_5_red_edge_1_sm, band_6_red_edge_2_sm)
             # ccci_pix(band_8_nir_big, band_4_red, band_5_red_edge_1_sm)
-            # dvi_pix(band_8_nir_big, band_4_red)
             # gari_pix(band_8_nir_big, band_3_green, band_2_blue, band_4_red)
             # ndre_pix(band_7_red_edge_3_sm, band_5_red_edge_1_sm)
-            # savi_pix(band_8_nir_big, band_4_red)
+            savi_pix(band_8_nir_big, band_4_red)
             # siwsi_pix(band_8a_nir_sm, band_11_swir_1)
 
             with rio.open(subset_list[i]) as src:
@@ -167,12 +140,11 @@ def pixel_based_ratio(subset_list):
                 ras_meta = src.profile
 
             # make any necessary changes to raster properties, e.g.:
-            ras_meta['dtype'] = "float32"
-            ras_meta['nodata'] = 0
+            ras_meta.update(count=1,
+                            dtype=rio.float32,
+                            nodata=0)
 
-            with rio.open(str('C:/402_praxis/processed/pix_based_indices/ndvi/') + str(subset_name[i]) + str('_NDVI') + str(
-                            '.tif'),
-                    'w',
-                    **ras_meta) \
-                    as dst:
-                dst.write(ndvi_pixel[i], 1)
+            with rio.open(
+                    str('C:/402_praxis/processed/pix_based_indices/savi_full/') + str(subset_name[i]) + str('_SAVI_sb') +
+                    str('.tif'), 'w', **ras_meta) as dst:
+                dst.write(savi_pixel[i], 1)
