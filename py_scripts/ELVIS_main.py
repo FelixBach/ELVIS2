@@ -50,7 +50,7 @@ def main():
     #
     # # pixel based function creates for each indice an tif
     # # manche parameter müssen manuell im folgenden Modul geändert werden
-    ELVIS_pix_based_indices_modul.pixel_based_ratio(subset_list_pix, outpath_date_based_subsets, outpath_pix_res)
+    # ELVIS_pix_based_indices_modul.pixel_based_ratio(subset_list_pix, outpath_date_based_subsets, outpath_pix_res)
 
     end_time = datetime.now()
     print("end-time = ", end_time - start_time, "Hr:min:sec")
