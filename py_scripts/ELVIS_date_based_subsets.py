@@ -81,7 +81,7 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
               "were found.\nYou can find the resulting .csv-file for each FID in your outpath.\n")
         print(f)
 
-        '''
+
         # iterate over .shp-files
         with fiona.open(shp_list[i_shp], "r") as shapefile:
             shapes = [feature["geometry"] for feature in shapefile]
@@ -115,4 +115,3 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
         subset_count = i_shp * i_ras
         if len(shp_list) * len(compare_list_names) == subset_count:
             print(str("Done. \n ") + str(subset_count) + str(" subsets created"))
-        '''
