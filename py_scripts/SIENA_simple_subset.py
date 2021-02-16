@@ -1,37 +1,18 @@
-from os.path import join
-import glob
 import fiona
 import rasterio
 import rasterio.mask
 from rasterio.mask import mask
+from py_scripts import SIENA_data_import_modul
 
 
 def simple_subset(inpath, outpath_subsets, shp_extension, ras_extension, shp_list, raster_list):
-    # searching .shp-files
-    for shp in glob.glob(join(inpath, shp_extension)):
-        shp_list.append(shp)
-    shp_list = [w.replace('\\', '/') for w in shp_list]
-
-    shp_names = [str("_") + w[len(inpath):-(len(shp_extension) - 1)] for w in shp_list]
+    # searching shp files
+    shp_list = SIENA_data_import_modul.shp_files(inpath, shp_extension)
+    shp_names = SIENA_data_import_modul.shp_names(inpath, shp_extension)
 
     # searching raster files
-    for ras in glob.glob(join(inpath, ras_extension)):
-        raster_list.append(ras)
-    raster_list = [w.replace('\\', '/') for w in raster_list]
-
-    raster_names = [w[len(inpath):-(len(ras_extension) - 1)] for w in raster_list]
-
-    # number of raster-files
-    if len(raster_list) == 1:
-        print(str(len(raster_list)) + str(" raster-file found"))
-    else:
-        print(str(len(raster_list)) + str(" raster-files found \n "))
-
-    # number of .shp-files
-    if len(shp_list) == 1:
-        print(str(len(shp_list)) + str(" .shp-file found") + str("\n"))
-    else:
-        print(str(len(shp_list)) + str(" .shp-files found") + str("\n"))
+    raster_list = SIENA_data_import_modul.raster_files(inpath, ras_extension)
+    raster_names = SIENA_data_import_modul.raster_names(inpath, ras_extension)
 
     for i, shp in enumerate(shp_list):
         with fiona.open(shp, "r") as shapefile:

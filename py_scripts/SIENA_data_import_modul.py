@@ -14,10 +14,9 @@ def shp_files(inpath, shp_extension):
 
 def shp_names(inpath, shp_extension):
     shp_list = shp_files(inpath, shp_extension)
-    shp_names = [str("_") + w[len(inpath):-(len(shp_extension) - 1)] for w in
-                 shp_list]
-    print(str("shape list: ") + str(shp_list))
-    print(str("shp names: ") + str(shp_names))
+    shp_names = [str("_") + w[len(inpath):-(len(shp_extension) - 1)] + str("_") for w in shp_list]
+    # print(str("shape list: ") + str(shp_list))
+    # print(str("shp names: ") + str(shp_names))
 
     # number of .shp-files
     if len(shp_list) == 1:
@@ -42,8 +41,8 @@ def raster_names(inpath, ras_extension):
     raster_list = raster_files(inpath, ras_extension)
     raster_names = [w[len(inpath):-(len(ras_extension) - 1)] for w in
                     raster_list]
-    print(str("raster list: ") + str(raster_list))
-    print(str("raster names: ") + str(raster_names))
+    # print(str("raster list: ") + str(raster_list))
+    # print(str("raster names: ") + str(raster_names))
 
     # number of raster-files
     if len(raster_list) == 1:

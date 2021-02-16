@@ -7,8 +7,7 @@ import pandas as pd
 
 
 def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_list, csv_extension, ras_extension,
-         shp_extension):
-
+                shp_extension):
     # search for csv files from the inpath and cut them
     for file in glob.glob(join(inpath, csv_extension)):
         csv_list.append(file)
@@ -64,7 +63,7 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
                paths]  # Get list of dataframes from CSV file paths
         concat_df = pd.concat(dfs)  # Concat dataframes into one
         compare_dates_df = concat_df  # saving original date and time in a csv file
-        compare_dates_df.to_csv(str(outpath_date_based_subsets) + str("/") + str("date_") + str(f), index=False,
+        compare_dates_df.to_csv(str(outpath_date_based_subsets) + str("date_") + str(f), index=False,
                                 header=False)
         concat_df.replace(to_replace=[":", '\.', '-'],
                           value="", regex=True, inplace=True)
@@ -80,7 +79,6 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
               "cloudfree-dates for the dataset", str(f),
               "were found.\nYou can find the resulting .csv-file for each FID in your outpath.\n")
         print(f)
-
 
         # iterate over .shp-files
         with fiona.open(shp_list[i_shp], "r") as shapefile:
