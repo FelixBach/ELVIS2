@@ -27,19 +27,17 @@ siwsi_mean = []
 siwsi_median = []
 
 
-def subset_import(subset_list, outpath_date_based_subsets):
+# func for calc mean/median field indices
+def indices_field_based(outpath_date_based_subsets, outpath_res_csv, csv_extension):
+    # new list for subsets
+    subset_list = []
+
     # searching for subsets as input
     for name in glob.glob(str(outpath_date_based_subsets) + str('*_4.tif')):
         subset_list.append(name)
     subset_list = [w.replace('\\', '/') for w in subset_list]
-    # subset_name = [w[len(inpath):] for w in subset_list]
     print(str(len(subset_list)) + str(" subsets found"))
 
-    return subset_list
-
-
-# func for calc mean/median field indices
-def indices_field_based(subset_list):
     for i, subset in enumerate(subset_list):
         with rio.open(subset_list[i]) as src:
             band_1_coast = src.read(1)
@@ -151,7 +149,7 @@ def indices_field_based(subset_list):
         siwsi_median.append(siwsi_median_field)
 
         if (i + 1) == (len(subset_list)):
-            with open("C:/402_praxis/processed/indices_csv/fid_4.csv", 'w',
+            with open(str(outpath_res_csv) + "fid_4" + csv_extension[1:], 'w',
                       encoding="UTF-8", newline='') as myfile:
                 wr = csv.writer(myfile)
                 wr.writerow(("ndvi_mean", "ndvi_median", "arvi_mean", "arvi_median", "ccci_mean", "ccci_median",

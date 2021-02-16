@@ -6,14 +6,11 @@ import rasterio.mask
 import pandas as pd
 
 
-def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_list, csv_extension, ras_extension,
-         shp_extension):
-
-    # search for csv files from the inpath and cut them
-    for file in glob.glob(join(inpath, csv_extension)):
-        csv_list.append(file)
-    csv_list = [w.replace('\\', '/') for w in csv_list]
-
+def date_subset(inpath, outpath_date_based_subsets, csv_extension, ras_extension,
+                shp_extension):
+    shp_list = []
+    raster_list = []
+    csv_list = []
     # searching .shp-files
     for shp in glob.glob(join(inpath, shp_extension)):
         shp_list.append(shp)
@@ -81,7 +78,6 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
               "were found.\nYou can find the resulting .csv-file for each FID in your outpath.\n")
         print(f)
 
-
         # iterate over .shp-files
         with fiona.open(shp_list[i_shp], "r") as shapefile:
             shapes = [feature["geometry"] for feature in shapefile]
@@ -108,10 +104,13 @@ def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_l
                             print(i_ras, "Image created.")
                         else:
                             print(i_ras, "Images created.")
+
                         i_ras = i_ras + 1
+            ras_count = 0
+            ras_count += len(compare_df)
         i_shp = i_shp + 1
 
         # number of created subsets
-        subset_count = i_shp * i_ras
-        if len(shp_list) * len(compare_list_names) == subset_count:
-            print(str("Done. \n ") + str(subset_count) + str(" subsets created"))
+        # subset_count = i_ras
+        # if len(shp_list) * len(compare_list_names) == subset_count:
+        print(str("Done. \n ") + str(ras_count) + str(" subsets created"))

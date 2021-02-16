@@ -2,10 +2,7 @@ import glob
 import rasterio as rio
 import numpy as np
 
-subset_list = []
-ras_ex = '*.tif'
-
-# result list pixel based
+# result lists pixel based
 ndvi_pixel = []
 arvi_pixel = []
 ccci_pixel = []
@@ -13,17 +10,6 @@ gari_pixel = []
 ndre_pixel = []
 savi_pixel = []
 siwsi_pixel = []
-
-
-def sublist(subset_list, outpath_date_based_subsets):
-    # searching for input in file
-    for name in glob.glob(outpath_date_based_subsets+str('*.tif')):
-        subset_list.append(name)
-    subset_list = [w.replace('\\', '/') for w in subset_list]
-    subset_name = [w[len(outpath_date_based_subsets):-(len(ras_ex) - 1)] for w in subset_list]
-    print(str(len(subset_list)) + str(" subsets found"))
-
-    return subset_list, subset_name
 
 
 def ndvi_pix(band_8_nir_big, band_4_red):
@@ -82,42 +68,47 @@ def siwsi_pix(band_8a_nir_sm, band_11_swir_1):
 
 
 # iterate over al files from folder and load bands
-def pixel_based_ratio(subset_list, outpath_date_based_subsets, outpath_pix_res):
-    subset_list, subset_name = sublist(subset_list, outpath_date_based_subsets)
-    for i, subset in enumerate(subset_list):
-        with rio.open(subset_list[i]) as src:
+def pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension):
+    # new list for pixel-based results
+    pix_subset_list = []
+
+    # searching for input in file
+    for name in glob.glob(outpath_date_based_subsets + str(ras_extension)):
+        pix_subset_list.append(name)
+    pix_subset_list = [w.replace('\\', '/') for w in pix_subset_list]
+    pix_subset_name = [w[len(outpath_date_based_subsets):-(len(ras_extension) - 1)] for w in pix_subset_list]
+    print(str(len(pix_subset_list)) + str(" subsets found"))
+
+    for i, subset in enumerate(pix_subset_list):
+        with rio.open(pix_subset_list[i]) as src:
             band_1_coast = src.read(1)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_2_blue = src.read(2)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_3_green = src.read(3)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_4_red = src.read(4)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_5_red_edge_1_sm = src.read(5)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_6_red_edge_2_sm = src.read(6)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_7_red_edge_3_sm = src.read(7)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_8_nir_big = src.read(8)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_8a_nir_sm = src.read(9)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_9_vapour = src.read(10)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_10_cirrus_cloud = src.read(11)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_11_swir_1 = src.read(12)
-        with rio.open(subset_list[i]) as src:
+        with rio.open(pix_subset_list[i]) as src:
             band_12_swir_2 = src.read(13)
 
             # ignoring division by zero
             np.seterr(divide='ignore', invalid='ignore')
-
-            # you can select ONLY ONE of these ratios for a pixel based result
-            # you have to change manually the calculated indices
-            # also important YOU have to change line 178 to the right indice and also some path changes in in line 173
 
             ndvi_pix(band_8_nir_big, band_4_red)
             arvi_pix(band_8_nir_big, band_4_red, band_2_blue)
@@ -127,7 +118,7 @@ def pixel_based_ratio(subset_list, outpath_date_based_subsets, outpath_pix_res):
             savi_pix(band_8_nir_big, band_4_red)
             siwsi_pix(band_8a_nir_sm, band_11_swir_1)
 
-            with rio.open(subset_list[i]) as src:
+            with rio.open(pix_subset_list[i]) as src:
                 ras_data = src.read()
                 ras_meta = src.profile
 
@@ -136,30 +127,30 @@ def pixel_based_ratio(subset_list, outpath_date_based_subsets, outpath_pix_res):
                             dtype=rio.float32,
                             nodata=0)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_NDVI_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_NDVI_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(ndvi_pixel[i], 1)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_ARVI_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_ARVI_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(arvi_pixel[i], 1)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_CCCI_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_CCCI_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(ccci_pixel[i], 1)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_GARI_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_GARI_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(gari_pixel[i], 1)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_NDRE_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_NDRE_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(ndre_pixel[i], 1)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_SAVI_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_SAVI_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(savi_pixel[i], 1)
 
-            with rio.open(outpath_pix_res + str(subset_name[i]) + str('_SIWSI_sb') +
-                    str('.tif'), 'w', **ras_meta) as dst:
+            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_SIWSI_sb') + str('.tif'), 'w',
+                          **ras_meta) as dst:
                 dst.write(siwsi_pixel[i], 1)

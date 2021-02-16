@@ -16,14 +16,14 @@ def shp_names(inpath, shp_extension):
     shp_list = shp_files(inpath, shp_extension)
     shp_names = [str("_") + w[len(inpath):-(len(shp_extension) - 1)] for w in
                  shp_list]
-    print(str("shape list: ") + str(shp_list))
-    print(str("shp names: ") + str(shp_names))
+    # print(str("shape list: ") + str(shp_list))
+    # print(str("shp names: ") + str(shp_names))
 
     # number of .shp-files
-    if len(shp_list) == 1:
-        print(str(len(shp_list)) + str(" .shp-file found") + str("\n"))
-    else:
-        print(str(len(shp_list)) + str(" .shp-files found") + str("\n"))
+    # if len(shp_list) == 1:
+    #     print(str(len(shp_list)) + str(" .shp-file found") + str("\n"))
+    # else:
+    #     print(str(len(shp_list)) + str(" .shp-files found") + str("\n"))
 
     return shp_names
 
