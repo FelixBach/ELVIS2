@@ -1,5 +1,5 @@
 # SIENA
-SIENA (Sentinel-2 tIme sEries aNAlysis) allows the subsetting of Sentinel-2 scenes and subsequently the calculation of vegetation indices for a study area, as well as the pixel-based calculation of vegetation indices. 
+SIENA (Sentinel-2 tIme sEries aNAlysis, previously ELVIS) allows the subsetting of Sentinel-2 scenes and subsequently the calculation of vegetation indices for a study area, as well as the pixel-based calculation of vegetation indices. 
 
 Available vegetation indices
 - NDVI
