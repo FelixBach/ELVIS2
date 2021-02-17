@@ -34,41 +34,42 @@ def indices_field_based(outpath_date_based_subsets, outpath_res_csv, csv_extensi
         for name in glob.glob(str(outpath_date_based_subsets) + str("*") + shp_names[i] + ras_extension[1:]):
             subset_list.append(name)
             subset_list = [w.replace('\\', '/') for w in subset_list]
-            # print(subset_list)
-            # j = 0
-            # for j, subset in enumerate(subset_list):
-            #     with rio.open(subset_list[j]) as src:
-            #         band_4_red = src.read(4)
-            #     with rio.open(subset_list[j]) as src:
-            #         band_8_nir_big = src.read(8)
-            #
-            #     np.seterr(divide='ignore', invalid='ignore')
-            #
-            #     # ndvi
-            #     ndvi_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_4_red)) / \
-            #                       (np.nanmean(band_8_nir_big) + np.nanmean(band_4_red))
-            #
-            #     ndvi_median_field = (np.nanmedian(band_8_nir_big) - np.nanmedian(band_4_red)) / \
-            #                         (np.nanmedian(band_8_nir_big) + np.nanmedian(band_4_red))
-            #
-            #     ndvi_mean.append(ndvi_mean_field)
-            #     ndvi_median.append(ndvi_median_field)
-            #     print(ndvi_mean)
-            #     print(ndvi_median)
-            #
-            #     j = j + 1
-            #
-            #     if (j + 1) == (len(subset_list)):
-            #         with open(str(outpath_res_csv) + shp_names[i] + csv_extension[1:], 'w',
-            #                   encoding="UTF-8", newline='') as myfile:
-            #             wr = csv.writer(myfile)
-            #             wr.writerow(("ndvi_mean", "ndvi_median"))
-            #             wr.writerows(zip(ndvi_mean, ndvi_median))
+            print(len(subset_list))
+            print(len(subset_list))
 
+        j = 0
+        while j < len(subset_list):
+            with rio.open(subset_list[j]) as src:
+                band_4_red = src.read(4)
+            with rio.open(subset_list[j]) as src:
+                band_8_nir_big = src.read(8)
+
+            np.seterr(divide='ignore', invalid='ignore')
+
+            # ndvi
+            ndvi_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_4_red)) / \
+                              (np.nanmean(band_8_nir_big) + np.nanmean(band_4_red))
+
+            ndvi_median_field = (np.nanmedian(band_8_nir_big) - np.nanmedian(band_4_red)) / \
+                                (np.nanmedian(band_8_nir_big) + np.nanmedian(band_4_red))
+
+            ndvi_mean.append(ndvi_mean_field)
+            ndvi_median.append(ndvi_median_field)
+            print(ndvi_mean)
+            print(ndvi_median)
+
+            j = j + 1
+
+            if j == (len(subset_list)):
+                with open(str(outpath_res_csv) + shp_names[i] + csv_extension[1:], 'w',
+                          encoding="UTF-8", newline='') as myfile:
+                    wr = csv.writer(myfile)
+                    wr.writerow(("ndvi_mean", "ndvi_median"))
+                    wr.writerows(zip(ndvi_mean, ndvi_median))
+
+            subset_list.clear()
         i = i + 1
-        print(len(subset_list))
-        subset_list.clear()
-        print(len(subset_list))
+
 
     return print("done")
 
@@ -81,3 +82,35 @@ shp_extension = '*.shp'
 ras_extension = '*.tif'
 
 indices_field_based(outpath_date_based_subsets, outpath_res_csv, csv_extension, inpath, shp_extension, ras_extension)
+
+# j = 0
+#             for len(subset_list) in subset_list:
+#                 print(subset_list)
+#                 # j = 0
+#                 with rio.open(subset_list[j]) as src:
+#                     band_4_red = src.read(4)
+#                 with rio.open(subset_list[j]) as src:
+#                     band_8_nir_big = src.read(8)
+#
+#                 np.seterr(divide='ignore', invalid='ignore')
+#
+#                 # ndvi
+#                 ndvi_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_4_red)) / \
+#                                   (np.nanmean(band_8_nir_big) + np.nanmean(band_4_red))
+#
+#                 ndvi_median_field = (np.nanmedian(band_8_nir_big) - np.nanmedian(band_4_red)) / \
+#                                     (np.nanmedian(band_8_nir_big) + np.nanmedian(band_4_red))
+#
+#                 ndvi_mean.append(ndvi_mean_field)
+#                 ndvi_median.append(ndvi_median_field)
+#                 print(ndvi_mean)
+#                 print(ndvi_median)
+#
+#                 j = j + 1
+#
+#                 if j == (len(subset_list)):
+#                     with open(str(outpath_res_csv) + shp_names[i] + csv_extension[1:], 'w',
+#                               encoding="UTF-8", newline='') as myfile:
+#                         wr = csv.writer(myfile)
+#                         wr.writerow(("ndvi_mean", "ndvi_median"))
+#                         wr.writerows(zip(ndvi_mean, ndvi_median))
