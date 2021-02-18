@@ -23,8 +23,8 @@ cvi_median = []
 
 
 # func for calc mean/median field indices
-def indices_field_based(outpath_date_based_subsets, outpath_res_csv, inpath, csv_extension, ras_extension,
-                        shp_extension):
+def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras_extension, shp_extension,
+                        csv_extension):
     # new list for subsets
     subset_list = []
     shp_list = []
