@@ -18,8 +18,8 @@ ndmi_mean = []
 ndmi_median = []
 ndwi_mean = []
 ndwi_median = []
-cvi_mean = []
-cvi_median = []
+lci_mean = []
+lci_median = []
 
 
 # func for calc mean/median field indices
@@ -32,7 +32,6 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
     for shp in glob.glob(inpath + shp_extension):
         shp_list.append(shp)
     shp_list = [w.replace('\\', '/') for w in shp_list]
-    print(shp_list)
     shp_names = [str("_") + w[len(inpath):-(len(shp_extension) - 1)] for w in shp_list]
 
     i = 0
@@ -147,13 +146,13 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             ndwi_median.append(ndwi_median_field)
 
             # cvi - chlorophyll vegetation index
-            cvi_mean_field = (np.nanmean(band_8a_nir_sm) * ((np.nanmean(band_5_red_edge_1_sm)) /
-                                                            (np.nanmean(band_3_green)**2)))
-            cvi_median_field = (np.nanmedian(band_8a_nir_sm) * ((np.nanmedian(band_5_red_edge_1_sm)) /
-                                                            (np.nanmedian(band_3_green) ** 2)))
+            lci_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_5_red_edge_1_sm)) / \
+                             (np.nanmean(band_8_nir_big) + np.nanmean(band_4_red))
+            lci_median_field = (np.nanmedian(band_8_nir_big) - np.nanmedian(band_5_red_edge_1_sm)) / \
+                               (np.nanmedian(band_8_nir_big) + np.nanmedian(band_4_red))
 
-            cvi_mean.append(cvi_mean_field)
-            cvi_median.append(cvi_median_field)
+            lci_mean.append(lci_mean_field)
+            lci_median.append(lci_median_field)
 
             j = j + 1
 
@@ -164,10 +163,10 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
                     wr = csv.writer(file)
                     wr.writerow(("ndvi_mean", "ndvi_median", "ccci_mean", "ccci_median", "gari_mean", "gari_median",
                                  "ndre_mean", "ndre_median", "siwsi_mean", "siwsi_median", "ndmi_mean", "ndmi_median",
-                                 "ndwi_mean", "ndwi_mean", "cvi_mean", "cvi_median"))
+                                 "ndwi_mean", "ndwi_median", "lci_mean", "lci_median"))
                     wr.writerows(zip(ndvi_mean, ndvi_median, ccci_mean, ccci_median, gari_mean,
                                      gari_median, ndre_mean, ndre_median, siwsi_mean, siwsi_median, ndmi_mean,
-                                     ndmi_median, ndwi_mean, ndwi_median, cvi_mean, cvi_median))
+                                     ndmi_median, ndwi_mean, ndwi_median, lci_mean, lci_median))
         # clearing indices lists
         ndvi_median.clear()
         ndvi_mean.clear()
@@ -183,8 +182,8 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
         ndmi_median.clear()
         ndwi_mean.clear()
         ndwi_median.clear()
-        cvi_mean.clear()
-        cvi_median.clear()
+        lci_mean.clear()
+        lci_median.clear()
 
         # clearing subset list
         subset_list.clear()
