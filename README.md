@@ -3,12 +3,12 @@ SIENA (Sentinel-2 tIme sEries aNAlysis, previously ELVIS) allows the subsetting 
 
 Available vegetation indices
 - NDVI
-- ARVI
 - CCCI
 - GARI
 - NDRE
-- SAVI
-- SIWSI
+- NDMI
+- NDWI
+- LCI
 
 Supported formats
 - .shp for masking 
