@@ -6,20 +6,28 @@ import csv
 # result lists for field mean/median
 ndvi_mean = []
 ndvi_median = []
+ndvi_sd = []
 ccci_mean = []
 ccci_median = []
+ccci_sd = []
 gari_mean = []
 gari_median = []
+gari_sd = []
 ndre_mean = []
 ndre_median = []
+ndre_sd = []
 siwsi_mean = []
 siwsi_median = []
+siwsi_sd = []
 ndmi_mean = []
 ndmi_median = []
+ndmi_sd = []
 ndwi_mean = []
 ndwi_median = []
+ndwi_sd = []
 lci_mean = []
 lci_median = []
+lci_sd = []
 
 
 # func for calc mean/median field indices
@@ -81,6 +89,9 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             ndvi_mean.append(ndvi_mean_field)
             ndvi_median.append(ndvi_median_field)
 
+            ndvi_f_sd = np.nanstd((band_8_nir_big - band_4_red) / (band_8_nir_big + band_4_red))
+            ndvi_sd.append(ndvi_f_sd)
+
             # ccci
             ccci_mean_field = ((np.nanmean(band_8a_nir_sm) - np.nanmean(band_5_red_edge_1_sm)) /
                                (np.nanmean(band_8a_nir_sm) + np.nanmean(band_5_red_edge_1_sm))) / \
@@ -93,6 +104,10 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
 
             ccci_mean.append(ccci_mean_field)
             ccci_median.append(ccci_median_field)
+
+            ccci_f_sd = np.nanstd((band_8_nir_big - band_5_red_edge_1_sm) / (band_8_nir_big + band_5_red_edge_1_sm)) / \
+                     ((band_8_nir_big - band_4_red) / (band_8_nir_big + band_4_red))
+            ccci_sd.append(ccci_f_sd)
 
             # gari
             gari_mean_field = (np.nanmean(band_8_nir_big) - (np.nanmean(band_3_green) - (np.nanmean(band_2_blue) -
@@ -109,6 +124,10 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             gari_mean.append(gari_mean_field)
             gari_median.append(gari_median_field)
 
+            gari_f_sd = np.nanstd(band_8_nir_big - (band_3_green - (band_2_blue - band_4_red))) / \
+                     (band_8_nir_big - (band_3_green + (band_2_blue - band_4_red)))
+            gari_sd.append(gari_f_sd)
+
             # ndre
             ndre_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_5_red_edge_1_sm)) / \
                               (np.nanmean(band_8_nir_big) + np.nanmean(band_5_red_edge_1_sm))
@@ -118,14 +137,9 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             ndre_mean.append(ndre_mean_field)
             ndre_median.append(ndre_median_field)
 
-            # siwsi
-            siwsi_mean_field = (np.nanmean(band_8a_nir_sm) - np.nanmean(band_11_swir_1)) / \
-                               (np.nanmean(band_8a_nir_sm) + np.nanmean(band_11_swir_1))
-            siwsi_median_field = (np.nanmedian(band_8a_nir_sm) - np.nanmedian(band_11_swir_1)) / \
-                                 (np.nanmedian(band_8a_nir_sm) + np.nanmedian(band_11_swir_1))
-
-            siwsi_mean.append(siwsi_mean_field)
-            siwsi_median.append(siwsi_median_field)
+            ndre_f_sd = np.nanstd(band_7_red_edge_3_sm - band_5_red_edge_1_sm) / \
+                        (band_7_red_edge_3_sm + band_5_red_edge_1_sm)
+            ndre_sd.append(ndre_f_sd)
 
             # ndmi - normalized difference moisture index
             ndmi_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_11_swir_1)) / \
@@ -136,6 +150,9 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             ndmi_mean.append(ndmi_mean_field)
             ndmi_median.append(ndmi_median_field)
 
+            ndmi_f_sd = np.nanstd(band_8_nir_big - band_11_swir_1) / (band_8_nir_big + band_11_swir_1)
+            ndmi_sd.append(ndmi_f_sd)
+
             # ndwi
             ndwi_mean_field = (np.nanmean(band_3_green) - np.nanmean(band_8_nir_big)) / \
                               (np.nanmean(band_3_green) + np.nanmean(band_8_nir_big))
@@ -145,7 +162,10 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             ndwi_mean.append(ndwi_mean_field)
             ndwi_median.append(ndwi_median_field)
 
-            # cvi - chlorophyll vegetation index
+            ndwi_f_sd = np.nanstd(band_3_green - band_8_nir_big) / (band_3_green + band_8_nir_big)
+            ndwi_sd.append(ndwi_f_sd)
+
+            # lci - leaf chlorophyll index
             lci_mean_field = (np.nanmean(band_8_nir_big) - np.nanmean(band_5_red_edge_1_sm)) / \
                              (np.nanmean(band_8_nir_big) + np.nanmean(band_4_red))
             lci_median_field = (np.nanmedian(band_8_nir_big) - np.nanmedian(band_5_red_edge_1_sm)) / \
@@ -154,6 +174,9 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
             lci_mean.append(lci_mean_field)
             lci_median.append(lci_median_field)
 
+            lci_f_sd = (band_8_nir_big - band_5_red_edge_1_sm) / (band_8_nir_big + band_4_red)
+            lci_sd.append(lci_f_sd)
+
             j = j + 1
 
             #  exporting csv-files with results
@@ -161,29 +184,35 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
                 with open(str(outpath_res_csv) + shp_names[i][1:] + csv_extension[1:], 'w',
                           encoding="UTF-8", newline='') as file:
                     wr = csv.writer(file)
-                    wr.writerow(("ndvi_mean", "ndvi_median", "ccci_mean", "ccci_median", "gari_mean", "gari_median",
-                                 "ndre_mean", "ndre_median", "siwsi_mean", "siwsi_median", "ndmi_mean", "ndmi_median",
-                                 "ndwi_mean", "ndwi_median", "lci_mean", "lci_median"))
-                    wr.writerows(zip(ndvi_mean, ndvi_median, ccci_mean, ccci_median, gari_mean,
-                                     gari_median, ndre_mean, ndre_median, siwsi_mean, siwsi_median, ndmi_mean,
-                                     ndmi_median, ndwi_mean, ndwi_median, lci_mean, lci_median))
+                    wr.writerow(("ndvi_mean", "ndvi_median", "ndvi_sd", "ccci_mean", "ccci_median", "ccci_sd",
+                                 "gari_mean", "gari_median", "gari_sd", "ndre_mean", "ndre_median","ndre_sd",
+                                 "ndmi_mean", "ndmi_sd", "ndmi_median", "ndwi_mean", "ndwi_median","ndwi_sd",
+                                 "lci_mean", "lci_median", "lci_sd"))
+                    wr.writerows(zip(ndvi_mean, ndvi_median, ndvi_sd, ccci_mean, ccci_median, ccci_sd, gari_mean,
+                                     gari_median, gari_sd, ndre_mean, ndre_median, ndre_sd, ndmi_mean, ndmi_median,
+                                     ndmi_sd, ndwi_mean, ndwi_median, ndwi_sd, lci_mean, lci_median, lci_sd))
         # clearing indices lists
         ndvi_median.clear()
         ndvi_mean.clear()
+        ndvi_sd.clear()
         ccci_mean.clear()
         ccci_median.clear()
+        ccci_sd.clear()
         gari_mean.clear()
         gari_median.clear()
+        gari_sd.clear()
         ndre_mean.clear()
         ndre_median.clear()
-        siwsi_mean.clear()
-        siwsi_median.clear()
+        ndre_sd.clear()
         ndmi_mean.clear()
         ndmi_median.clear()
+        ndmi_sd.clear()
         ndwi_mean.clear()
         ndwi_median.clear()
+        ndwi_sd.clear()
         lci_mean.clear()
         lci_median.clear()
+        lci_sd.clear()
 
         # clearing subset list
         subset_list.clear()

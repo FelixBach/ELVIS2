@@ -52,15 +52,6 @@ def ndre_pix(band_7_red_edge_3_sm, band_5_red_edge_1_sm):
 
     return ndre_pixel
 
-    # siwsi - Shortwave infrared water stress index
-
-
-def siwsi_pix(band_8a_nir_sm, band_11_swir_1):
-    siwsi_pixel_res = (band_8a_nir_sm - band_11_swir_1) / (band_8a_nir_sm + band_11_swir_1)
-    siwsi_pixel.append(siwsi_pixel_res)
-
-    return siwsi_pixel
-
     # ndmi - normalized difference moisture index
 
 
@@ -70,7 +61,7 @@ def ndmi_pix(band_8_nir_big, band_11_swir_1):
 
     return ndmi_pixel
 
-    # ndwi -
+    # ndwi - Normalized Difference Water Index
 
 
 def ndwi_pix(band_3_green, band_8_nir_big):
@@ -136,7 +127,6 @@ def pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension
             ccci_pix(band_8_nir_big, band_4_red, band_5_red_edge_1_sm)
             gari_pix(band_8_nir_big, band_3_green, band_2_blue, band_4_red)
             ndre_pix(band_7_red_edge_3_sm, band_5_red_edge_1_sm)
-            siwsi_pix(band_8a_nir_sm, band_11_swir_1)
             ndmi_pix(band_8a_nir_sm, band_11_swir_1)
             ndwi_pix(band_3_green, band_8_nir_big)
             lci(band_8_nir_big, band_5_red_edge_1_sm, band_4_red)
@@ -169,11 +159,6 @@ def pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension
                           **ras_meta) as dst:
                 dst.write(ndre_pixel[i], 1)
                 # print(pix_subset_name[i] + str("_NDRE"), str(".tif"), str("created"))
-
-            with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str('_SIWSI_sb') + str('.tif'), 'w',
-                          **ras_meta) as dst:
-                dst.write(siwsi_pixel[i], 1)
-                # print(pix_subset_name[i] + str("_SIWSI"), str(".tif"), str("created"))
 
             with rio.open(outpath_pix_res + str(pix_subset_name[i]) + str("_NDMI_sb") + str(".tif"), "w",
                           **ras_meta) as dst:

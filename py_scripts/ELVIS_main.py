@@ -22,7 +22,7 @@ def main():
     # outpath_pix_res = "C:/Users/Max/Desktop/GEO402/processed/outpath/pix_based"
 
     # outpath like "C:/your/path/indices_csv/"
-    outpath_res_csv = "C:/402_praxis/processed/indices_csv/update/"
+    outpath_res_csv = "C:/402_praxis/processed/indices_csv/update/new_res_lci/"
     # outpath_res_csv = "C:/Users/Max/Desktop/GEO402/processed/outpath/csv_indizes/"
 
     ######################################
@@ -32,20 +32,25 @@ def main():
     csv_extension = '*.csv'
 
     # search for and subset cloudless images
-    print(f"\n Start creating subsets. \n")
 
+    # notification
+    # print(f"\n Start creating subsets. \n")
     # ELVIS_date_based_subsets.date_subset(inpath, outpath_date_based_subsets, csv_extension, ras_extension,
     #                                      shp_extension)
 
     # calculating the different indices with a field based and pixel based approach
     # field based function creates mean/median for each field and gives an csv-file as output
+
+    # notification
     print(f"\n Start calculating field based indices and writing result csv's. \n")
-    # ELVIS_field_indices_modul.indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras_extension,
-    #                                               shp_extension, csv_extension)
+    ELVIS_field_indices_modul.indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras_extension,
+                                                  shp_extension, csv_extension)
 
     # pixel based function creates for each indice an tif
+    # notification
     print(f"\n Start calculating pixel based ratios. \n")
-    # ELVIS_pix_based_indices_modul.pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension)
+    ELVIS_pix_based_indices_modul.pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension)
+
 
     end_time = datetime.now()
     print(f"\n end-time =", end_time - start_time, "Hr:min:sec \n")
