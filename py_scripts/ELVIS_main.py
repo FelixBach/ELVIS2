@@ -48,9 +48,8 @@ def main():
 
     # pixel based function creates for each indice an tif
     # notification
-    print(f"\n Start calculating pixel based ratios. \n")
-    ELVIS_pix_based_indices_modul.pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension)
-
+    # print(f"\n Start calculating pixel based ratios. \n")
+    # ELVIS_pix_based_indices_modul.pixel_based_ratio(outpath_date_based_subsets, outpath_pix_res, ras_extension)
 
     end_time = datetime.now()
     print(f"\n end-time =", end_time - start_time, "Hr:min:sec \n")
