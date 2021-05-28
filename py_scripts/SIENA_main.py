@@ -21,7 +21,7 @@ def main():
     ######################################
 
     folder_subsets = "subsets/"
-    folder_csv_files = "csv"
+    folder_csv_files = "csv/"
 
     subset_path = os.path.join(path, folder_subsets)
     # if not os.path.isdir(folder_csv_files):
@@ -33,11 +33,6 @@ def main():
     # subsetting simple
     SIENA_subset.subset(path, subset_path, shp_extension, ras_extension)
 
-    # subsetting all files
-    # ELVIS_createsubset_modul.subs(shp_list, shp_names, raster_list, raster_names, ras_extension, folder_subsets)
-
-    # calculating the different indices with a field based and pixel based approach
-    # field based function creates mean/median for each field/croptype and gives an csv-file as output
     # subset_list = ELVIS_field_indices_modul.subset_import(subset_list, outpath_date_based_subsets)
     # ELVIS_field_indices_modul.indices_field_based(subset_list)
 

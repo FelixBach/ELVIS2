@@ -1,7 +1,7 @@
 import os
 import glob
 import fiona
-import rasterio
+import rasterio as rio
 import rasterio.mask
 from rasterio.mask import mask
 
@@ -39,21 +39,22 @@ def subset(path, subset_path, shp_extension, ras_extension):
             shapes = [feature["geometry"] for feature in shapefile]
 
             for j, ras in enumerate(raster_list):
-                for scene in raster_list:
-                    with rasterio.open(ras, "r") as src:
-                        out_image, out_transform = mask(src, shapes, crop=True)
-                        out_meta = src.meta
+                with rasterio.open(ras, "r") as src:
+                    out_image, out_transform = mask(src, shapes, crop=True)
+                    out_meta = src.meta
 
-                        out_meta.update({"driver": "GTiff",
-                                         "height": out_image.shape[1],
-                                         "width": out_image.shape[2],
-                                         "transform": out_transform})
+                    out_meta.update({"driver": "GTiff",
+                                     "height": out_image.shape[1],
+                                     "width": out_image.shape[2],
+                                     "transform": out_transform})
 
-                        ras_path = f"{subset_path}{raster_names[j]}{shp_names[i]}{ras_extension[1:]}"
+                    ras_path = f"{subset_path}{raster_names[j]}{shp_names[i]}{ras_extension[1:]}"
 
-                        with rasterio.open(ras_path, "w", **out_meta) as dest:
-                            dest.write(out_image)
-                        # print(f"Processing")
+                if not os.path.isfile(ras_path):
+                    with rio.open(ras_path, 'w', **out_meta) as dest:
+                        dest.write(out_image)
+                else:
+                    print(f"{ras_path} exists")
 
     # number of created subsets
     subset_count = (i + 1) * (j + 1)
