@@ -1,59 +1,40 @@
 from py_scripts import SIENA_createsubset, SIENA_data_import, SIENA_field_indices, \
-    SIENA_pix_based_indices, SIENA_date_based_subsets, SIENA_simple_subset
+    SIENA_pix_based_indices, SIENA_date_based_subsets, SIENA_subset
 from datetime import datetime
+import os
 
 start_time = datetime.now()
 
 
 def main():
+    ######################################
     # input and output paths
 
-    # inpath like "C:/your/path/input/"
-    inpath = "C:/402_praxis/xx_04_data/S2/FRIEN/"  # input path, store .shp ,raster and csv-files in the same input
-    # folder
-
-    # outpath like "C:/your/path/output/"
-    outpath_subsets = "C:/402_praxis/processed/sen2_scenes/fid_based/test/"  # path from the output folder
-
-    outpath_date_based_subsets = "C:/402_praxis/processed/sen2_scenes/date_based/"
-    # outpath like "C:/your/path/output_date_based/"
-
-    outpath_res_csv = "C:/402_praxis/processed/sen2_scenes/indices_csv/"
+    # path like "C:/your/path/input/"
+    path = "C:/SIENA/data/"  # input path, store .shp and raster in the same input folder
 
     # specify extensions
     shp_extension = '*.shp'
     ras_extension = '*.tif'
     csv_extension = '*.csv'
 
-    # initial lists
-    subset_list = []
-    subset_list_pix = []
-    shp_list = []
-    raster_list = []
-    csv_list = []
+    ######################################
 
-    # search for and subset cloudless images
-    # only use this function if you have some csv-files
-    # subset your raster-files with information from a csv-file
-    # ELVIS_date_based_subsets.date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_list,
-    #                                      csv_extension, ras_extension, shp_extension)
+    folder_subsets = "subsets/"
+    folder_csv_files = "csv"
 
-    # if you just want to subset all your raster-files, you should activate the following functions in line 41, 42, 45
-    # 46 and 51
-
-    # create shp_list and shp names
-    # shp_list = ELVIS_data_import_modul.shp_files(inpath, shp_extension)
-    # shp_names = ELVIS_data_import_modul.shp_names(inpath, shp_extension)
-
-    # create raster_list and raster names
-    # raster_list = ELVIS_data_import_modul.raster_files(inpath, ras_extension)
-    # raster_names = ELVIS_data_import_modul.raster_names(inpath, ras_extension)
+    subset_path = os.path.join(path, folder_subsets)
+    # if not os.path.isdir(folder_csv_files):
+    #     csv_path = os.path.join(path, folder_csv_files)
+    #     os.makedirs(csv_path)
+    # else:
+    #     print(f"Folder exists")
 
     # subsetting simple
-    SIENA_simple_subset.simple_subset(inpath, outpath_subsets, shp_extension, ras_extension, shp_list, raster_list)
+    SIENA_subset.subset(path, subset_path, shp_extension, ras_extension)
 
     # subsetting all files
-    # ELVIS_createsubset_modul.subs(shp_list, shp_names, raster_list, raster_names, ras_extension, outpath_subsets)
+    # ELVIS_createsubset_modul.subs(shp_list, shp_names, raster_list, raster_names, ras_extension, folder_subsets)
 
     # calculating the different indices with a field based and pixel based approach
     # field based function creates mean/median for each field/croptype and gives an csv-file as output

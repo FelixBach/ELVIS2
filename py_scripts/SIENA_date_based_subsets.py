@@ -3,7 +3,7 @@ import glob
 import fiona
 import rasterio
 import rasterio.mask
-import pandas as pd
+# import pandas as pd
 
 
 def date_subset(inpath, outpath_date_based_subsets, csv_list, shp_list, raster_list, csv_extension, ras_extension,
