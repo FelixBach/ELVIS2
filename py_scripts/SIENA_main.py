@@ -1,5 +1,5 @@
-from py_scripts import ELVIS_createsubset_modul, ELVIS_data_import_modul, ELVIS_field_indices_modul, \
-    ELVIS_pix_based_indices_modul, ELVIS_date_based_subsets, ELVIS_simple_subset
+from py_scripts import SIENA_createsubset, SIENA_data_import, SIENA_field_indices, \
+    SIENA_pix_based_indices, SIENA_date_based_subsets, SIENA_simple_subset
 from datetime import datetime
 
 start_time = datetime.now()
@@ -50,7 +50,7 @@ def main():
     # raster_names = ELVIS_data_import_modul.raster_names(inpath, ras_extension)
 
     # subsetting simple
-    ELVIS_simple_subset.simple_subset(inpath, outpath_subsets, shp_extension, ras_extension, shp_list, raster_list)
+    SIENA_simple_subset.simple_subset(inpath, outpath_subsets, shp_extension, ras_extension, shp_list, raster_list)
 
     # subsetting all files
     # ELVIS_createsubset_modul.subs(shp_list, shp_names, raster_list, raster_names, ras_extension, outpath_subsets)
