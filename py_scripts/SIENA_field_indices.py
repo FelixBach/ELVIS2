@@ -2,6 +2,7 @@ import glob
 import numpy as np
 import rasterio as rio
 import csv
+import os
 
 # result lists for field mean/median
 ndvi_mean = []
@@ -31,6 +32,13 @@ lci_sd = []
 
 
 def field_based(path, folder_subsets, folder_csv_files, ras_extension, shp_extension, csv_extension):
+    if not os.path.isdir(path + folder_csv_files):
+        csv_path = os.path.join(path, folder_csv_files)
+        os.makedirs(csv_path)
+        print(f"CSV output folder created \n")
+    else:
+        print(f"CSV output folder exists \n")
+
     # new list for subsets
     subset_list = []
     shp_list = []
@@ -175,21 +183,17 @@ def field_based(path, folder_subsets, folder_csv_files, ras_extension, shp_exten
             lci_f_sd = np.nanstd((band_8_nir_big - band_5_red_edge_1_sm) / (band_8_nir_big + band_4_red))
             lci_sd.append(lci_f_sd)
 
-            j = j + 1
-
-            #  exporting csv-files with results
-            if j == (len(subset_list)):
-                with open(path + folder_csv_files + shp_names[i][1:] + csv_extension[1:], 'w',
-                          encoding="UTF-8", newline='') as file:
-                    wr = csv.writer(file)
-                    wr.writerow(("subset_name", "ndvi_mean", "ndvi_median", "ndvi_sd", "ccci_mean", "ccci_median", "ccci_sd",
-                                 "gari_mean", "gari_median", "gari_sd", "ndre_mean", "ndre_median", "ndre_sd",
-                                 "ndmi_mean", "ndmi_sd", "ndmi_median", "ndwi_mean", "ndwi_median", "ndwi_sd",
-                                 "lci_mean", "lci_median", "lci_sd"))
-                    wr.writerows(zip(subset_names, ndvi_mean, ndvi_median, ndvi_sd, ccci_mean, ccci_median, ccci_sd, gari_mean,
-                                     gari_median, gari_sd, ndre_mean, ndre_median, ndre_sd, ndmi_mean, ndmi_median,
-                                     ndmi_sd, ndwi_mean, ndwi_median, ndwi_sd, lci_mean, lci_median, lci_sd))
-        # clearing indices lists
+        with open(path + folder_csv_files + shp_names[i][1:] + csv_extension[1:], 'w',
+                  encoding="UTF-8", newline='') as file:
+            wr = csv.writer(file)
+            wr.writerow(("subset_name", "ndvi_mean", "ndvi_median", "ndvi_sd", "ccci_mean", "ccci_median", "ccci_sd",
+                         "gari_mean", "gari_median", "gari_sd", "ndre_mean", "ndre_median", "ndre_sd",
+                         "ndmi_mean", "ndmi_sd", "ndmi_median", "ndwi_mean", "ndwi_median", "ndwi_sd",
+                         "lci_mean", "lci_median", "lci_sd"))
+            wr.writerows(zip(subset_names, ndvi_mean, ndvi_median, ndvi_sd, ccci_mean, ccci_median, ccci_sd, gari_mean,
+                             gari_median, gari_sd, ndre_mean, ndre_median, ndre_sd, ndmi_mean, ndmi_median,
+                             ndmi_sd, ndwi_mean, ndwi_median, ndwi_sd, lci_mean, lci_median, lci_sd))
+# clearing indices lists
         ndvi_median.clear()
         ndvi_mean.clear()
         ndvi_sd.clear()

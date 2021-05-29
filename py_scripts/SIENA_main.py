@@ -21,20 +21,13 @@ def main():
 
     folder_subsets = "subsets/"
     folder_csv_files = "csv/"
+    folder_pixel_res = "pixel_res/"
 
-    subset_path = os.path.join(path, folder_subsets)
-    # if not os.path.isdir(folder_csv_files):
-    #     csv_path = os.path.join(path, folder_csv_files)
-    #     os.makedirs(csv_path)
-    # else:
-    #     print(f"Folder exists")
+    # SIENA_subset.subset(path, folder_subsets, shp_extension, ras_extension)
 
-    # subsetting simple
-    # SIENA_subset.subset(path, subset_path, shp_extension, ras_extension)
+    # SIENA_field_indices.field_based(path, folder_subsets, folder_csv_files, ras_extension, shp_extension, csv_extension)
 
-    SIENA_field_indices.field_based(path, folder_subsets, folder_csv_files, ras_extension, shp_extension, csv_extension)
-    # pixel based function creates for each indice an tif
-    # ELVIS_pix_based_indices_modul.pixel_based_ratio(subset_list_pix)
+    SIENA_pix_based_indices.pixel_based(path, folder_pixel_res, folder_subsets, folder_pixel_res, ras_extension)
 
     end_time = datetime.now()
     print("end-time = ", end_time - start_time, "Hr:min:sec")

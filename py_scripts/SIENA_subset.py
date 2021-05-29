@@ -6,7 +6,14 @@ import rasterio.mask
 from rasterio.mask import mask
 
 
-def subset(path, subset_path, shp_extension, ras_extension):
+def subset(path, folder_subsets, shp_extension, ras_extension):
+    subset_path = os.path.join(path, folder_subsets)
+    if not os.path.isdir(path + folder_subsets):
+        os.makedirs(subset_path)
+        print(f"output folder for subsets created \n")
+    else:
+        print(f"output folder for subsets exists \n")
+
     shp_list = []
     for shp in glob.glob(os.path.join(path, shp_extension)):
         shp_list.append(shp)
@@ -28,11 +35,6 @@ def subset(path, subset_path, shp_extension, ras_extension):
         print(str(len(shp_list)) + str(" .shp-file found") + str("\n"))
     else:
         print(str(len(shp_list)) + str(" .shp-files found") + str("\n"))
-
-    if not os.path.isdir(subset_path):
-        os.makedirs(subset_path)
-    else:
-        print(f"Folder exists")
 
     for i, shp in enumerate(shp_list):
         with fiona.open(shp, "r") as shapefile:
@@ -59,4 +61,4 @@ def subset(path, subset_path, shp_extension, ras_extension):
     # number of created subsets
     subset_count = (i + 1) * (j + 1)
     if len(shp_list) * len(raster_list) == subset_count:
-        print(f"Done. \n{subset_count} subsets created")
+        print(f"Done. {subset_count} subsets created \n")
