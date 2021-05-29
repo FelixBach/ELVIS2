@@ -8,9 +8,8 @@ start_time = datetime.now()
 
 def main():
     ######################################
-    # input and output paths
-
-    # path like "C:/your/path/input/"
+    # input path
+    # path like "C:/your_path/data/"
     path = "C:/SIENA/data/"  # input path, store .shp and raster in the same input folder
 
     # specify extensions
@@ -37,7 +36,6 @@ def main():
     # ELVIS_field_indices_modul.indices_field_based(subset_list)
 
     # pixel based function creates for each indice an tif
-    # manche parameter müssen manuell im folgenden Modul geändert werden
     # ELVIS_pix_based_indices_modul.pixel_based_ratio(subset_list_pix)
 
     end_time = datetime.now()
