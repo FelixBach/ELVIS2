@@ -30,11 +30,9 @@ def main():
     #     print(f"Folder exists")
 
     # subsetting simple
-    SIENA_subset.subset(path, subset_path, shp_extension, ras_extension)
+    # SIENA_subset.subset(path, subset_path, shp_extension, ras_extension)
 
-    # subset_list = ELVIS_field_indices_modul.subset_import(subset_list, outpath_date_based_subsets)
-    # ELVIS_field_indices_modul.indices_field_based(subset_list)
-
+    SIENA_field_indices.field_based(path, folder_subsets, folder_csv_files, ras_extension, shp_extension, csv_extension)
     # pixel based function creates for each indice an tif
     # ELVIS_pix_based_indices_modul.pixel_based_ratio(subset_list_pix)
 

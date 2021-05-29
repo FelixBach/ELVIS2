@@ -30,26 +30,24 @@ lci_median = []
 lci_sd = []
 
 
-# func for calc mean/median field indices
-def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras_extension, shp_extension,
-                        csv_extension):
+def field_based(path, folder_subsets, folder_csv_files, ras_extension, shp_extension, csv_extension):
     # new list for subsets
     subset_list = []
     shp_list = []
+
     # searching .shp-files
-    for shp in glob.glob(inpath + shp_extension):
+    for shp in glob.glob(path + shp_extension):
         shp_list.append(shp)
     shp_list = [w.replace('\\', '/') for w in shp_list]
-    shp_names = [str("_") + w[len(inpath):-(len(shp_extension) - 1)] for w in shp_list]
+    shp_names = [str("_") + w[len(path):-(len(shp_extension) - 1)] for w in shp_list]
 
-    i = 0
-    while i < len(shp_names):
-        for name in glob.glob(str(outpath_date_based_subsets) + str("*") + shp_names[i] + ras_extension[1:]):
+    for i, shp in enumerate(shp_names):
+        for name in glob.glob(path + folder_subsets + str("*") + shp_names[i] + ras_extension[1:]):
             subset_list.append(name)
             subset_list = [w.replace('\\', '/') for w in subset_list]
+            subset_names = [w[len(path + folder_subsets):-(len(ras_extension) - 1)] for w in subset_list]
 
-        j = 0
-        while j < len(subset_list):
+        for j, subset in enumerate(subset_list):
             with rio.open(subset_list[j]) as src:
                 band_1_coast = src.read(1)
             with rio.open(subset_list[j]) as src:
@@ -181,14 +179,14 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
 
             #  exporting csv-files with results
             if j == (len(subset_list)):
-                with open(str(outpath_res_csv) + shp_names[i][1:] + csv_extension[1:], 'w',
+                with open(path + folder_csv_files + shp_names[i][1:] + csv_extension[1:], 'w',
                           encoding="UTF-8", newline='') as file:
                     wr = csv.writer(file)
-                    wr.writerow(("ndvi_mean", "ndvi_median", "ndvi_sd", "ccci_mean", "ccci_median", "ccci_sd",
+                    wr.writerow(("subset_name", "ndvi_mean", "ndvi_median", "ndvi_sd", "ccci_mean", "ccci_median", "ccci_sd",
                                  "gari_mean", "gari_median", "gari_sd", "ndre_mean", "ndre_median", "ndre_sd",
                                  "ndmi_mean", "ndmi_sd", "ndmi_median", "ndwi_mean", "ndwi_median", "ndwi_sd",
                                  "lci_mean", "lci_median", "lci_sd"))
-                    wr.writerows(zip(ndvi_mean, ndvi_median, ndvi_sd, ccci_mean, ccci_median, ccci_sd, gari_mean,
+                    wr.writerows(zip(subset_names, ndvi_mean, ndvi_median, ndvi_sd, ccci_mean, ccci_median, ccci_sd, gari_mean,
                                      gari_median, gari_sd, ndre_mean, ndre_median, ndre_sd, ndmi_mean, ndmi_median,
                                      ndmi_sd, ndwi_mean, ndwi_median, ndwi_sd, lci_mean, lci_median, lci_sd))
         # clearing indices lists
@@ -216,7 +214,5 @@ def indices_field_based(inpath, outpath_date_based_subsets, outpath_res_csv, ras
 
         # clearing subset list
         subset_list.clear()
-
-        i = i + 1
 
     return print("Field indices calculated for each subset")
